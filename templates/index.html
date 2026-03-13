@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>股票查询 - stock101</title>
+    <style>
+      body { font-family: system-ui, sans-serif; margin: 0; padding: 0; background: #f7f7f7; color: #111; }
+      .container { max-width: 720px; margin: 40px auto; padding: 24px; background: #fff; border-radius: 12px; box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+      h1 { margin-top: 0; }
+      label { display: block; margin-bottom: 8px; font-weight: 600; }
+      input[type=text] { width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 8px; }
+      button { padding: 10px 16px; border: none; border-radius: 8px; background: #1c7ed6; color: #fff; cursor: pointer; font-weight: 600; }
+      .note { margin-top: 6px; color: #555; font-size: 0.95rem; }
+      .error { padding: 10px 14px; background: #ffe6e6; border: 1px solid #ffb3b3; border-radius: 8px; color: #9b1c1c; margin-top: 18px; }
+      .card { margin-top: 20px; padding: 18px; border-radius: 10px; background: #f0f7ff; border: 1px solid #d2e4fb; }
+      .row { display: flex; justify-content: space-between; gap: 12px; margin-top: 8px; }
+      .row > div { flex: 1; }
+      .label { color: #555; font-size: 0.9rem; }
+      .value { margin-top: 4px; font-size: 1.1rem; font-weight: 600; }
+      footer { margin-top: 28px; text-align: center; font-size: 0.85rem; color: #666; }
+      a { color: #1c7ed6; text-decoration: none; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>股票信息查询</h1>
+      <p>使用 <code>yfinance</code> API 获取股票的最新行情。支持美股、港股、A 股等代码。</p>
+
+      <form method="post">
+        <label for="ticker">股票代码</label>
+        <input id="ticker" name="ticker" type="text" placeholder="例如: AAPL, 000001.SZ, 600000.SS" value="{{ ticker | default('') }}" autocapitalize="characters" />
+        <div class="note">A 股代码格式示例：<code>000001.SZ</code> (深市) / <code>600000.SS</code> (沪市)。</div>
+        <div style="margin-top: 16px;">
+          <button type="submit">查询</button>
+        </div>
+      </form>
+
+      {% if error %}
+        <div class="error">{{ error }}</div>
+      {% endif %}
+
+      {% if quote %}
+        <div class="card">
+          <h2>{{ quote.name or quote.symbol }} <small>({{ quote.symbol }})</small></h2>
+          <div class="row">
+            <div>
+              <div class="label">现价</div>
+              <div class="value">{{ quote.price }}</div>
+            </div>
+            <div>
+              <div class="label">昨收</div>
+              <div class="value">{{ quote.previous_close }}</div>
+            </div>
+            <div>
+              <div class="label">开盘</div>
+              <div class="value">{{ quote.open }}</div>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <div class="label">当日最高</div>
+              <div class="value">{{ quote.day_high }}</div>
+            </div>
+            <div>
+              <div class="label">当日最低</div>
+              <div class="value">{{ quote.day_low }}</div>
+            </div>
+            <div>
+              <div class="label">货币</div>
+              <div class="value">{{ quote.currency }}</div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      <footer>
+        Made with <strong>yfinance</strong> · <a href="https://github.com/ranaroussi/yfinance">yfinance</a>
+      </footer>
+    </div>
+  </body>
+</html>
