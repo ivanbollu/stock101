@@ -1,7 +1,7 @@
 # stock101
 
 这是一个基于 `yfinance` 的简易股票查询网站。
-## 是用github Copilot 功能vibe coding 完成。
+演示一下 用github Copilot 功能vibe coding 完成。
 
 ## 快速开始
 
